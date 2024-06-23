@@ -53,5 +53,6 @@ class CancelEvent extends FilterCheckSelectionEvent {
 }
 
 class ApplyEvent extends FilterCheckSelectionEvent {
-  const ApplyEvent();
+  final bool isGlobal;
+  const ApplyEvent({required this.isGlobal});
 }

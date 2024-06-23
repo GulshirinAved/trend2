@@ -9,66 +9,122 @@ class FilterCheckSelectionBloc
   FilterCheckSelectionBloc()
       : super(
           const FilterCheckSelectionState(
-              brandList: [],
-              genderList: [],
-              storeList: [],
-              colorList: [],
-              categoryList: [],
-              sizeList: [],
-              materialList: [],
-              patternList: [],
-              isGlobal: false),
+            brandList: [],
+            genderList: [],
+            storeList: [],
+            colorList: [],
+            categoryList: [],
+            sizeList: [],
+            materialList: [],
+            patternList: [],
+            globalBrandList: [],
+            globalCategoryList: [],
+            globalStoreList: [],
+            globalColorList: [],
+            globalGenderList: [],
+            globalMaterialList: [],
+            globalPatternList: [],
+            globalSizeList: [],
+            isGlobal: false,
+          ),
         ) {
     on<CheckEvent>((event, emit) {
-// Create a new list from the current state list
-      final List<String> updatedList =
-          List<String>.from(state.getListForId(event.id));
-// Add the title if it's not already in the list
+      final List<String> updatedList = List<String>.from(
+        state.getListForId(
+          event.id,
+          state.isGlobal,
+        ),
+      );
       if (!updatedList.contains(event.title)) {
         updatedList.add(event.title);
       }
-// Emit the new state with the updated list
-      emit(state.copyWithListForId(event.id, updatedList));
+      emit(
+        state.copyWithListForId(
+          event.id,
+          updatedList,
+          state.isGlobal,
+        ),
+      );
+      print(state);
     });
 
     on<UncheckEvent>((event, emit) {
-// Get the current list based on the event id
-      final List<String> currentList =
-          List<String>.from(state.getListForId(event.id));
-// Remove the title from the list
+      final List<String> currentList = List<String>.from(
+        state.getListForId(
+          event.id,
+          state.isGlobal,
+        ),
+      );
       currentList.remove(event.title);
-// Emit the new state with the updated list
-      emit(state.copyWithListForId(event.id, currentList));
+      emit(
+        state.copyWithListForId(
+          event.id,
+          currentList,
+          state.isGlobal,
+        ),
+      );
+      print(state);
     });
 
     on<ClearEvent>((event, emit) {
-// Emit the new state with an empty list for the given id
-      emit(state.copyWithListForId(event.id, []));
+      emit(state.copyWithListForId(event.id, [], state.isGlobal));
     });
-    on<ApplyEvent>((event, emit) {});
+
+    on<ApplyEvent>((event, emit) {
+      if (event.isGlobal) {
+        emit(
+          state.copyWith(
+            globalBrandList: state.brandList,
+            globalCategoryList: state.categoryList,
+            globalStoreList: state.storeList,
+            globalColorList: state.colorList,
+            globalGenderList: state.genderList,
+            globalMaterialList: state.materialList,
+            globalPatternList: state.patternList,
+            globalSizeList: state.sizeList,
+            isGlobal: false,
+          ),
+        );
+      } else {
+// Apply changes locally
+        emit(
+          state.copyWith(
+            globalBrandList: [],
+            globalCategoryList: [],
+            globalStoreList: [],
+            globalColorList: [],
+            globalGenderList: [],
+            globalMaterialList: [],
+            globalPatternList: [],
+            globalSizeList: [],
+            isGlobal: true,
+          ),
+        );
+      }
+      print(state);
+    });
   }
 }
 
 extension on FilterCheckSelectionState {
-  List<String> getListForId(int id) {
-// Return the list corresponding to the id
+  List<String> getListForId(int id, bool isGlobal) {
     switch (id) {
       case 0:
-        return brandList;
+        return isGlobal ? globalBrandList : brandList;
       case 1:
-        return genderList;
+        return isGlobal ? globalGenderList : genderList;
       case 2:
-        return storeList;
+        return isGlobal ? globalStoreList : storeList;
       case 4:
-        return colorList;
+        return isGlobal ? globalColorList : colorList;
       case 5:
-        return categoryList;
+        return isGlobal ? globalCategoryList : categoryList;
       case 6:
-        return sizeList;
+        return isGlobal ? globalSizeList : sizeList;
       case 7:
-        return materialList;
+        return isGlobal ? globalMaterialList : materialList;
       case 8:
-        return patternList;
+        return isGlobal ? globalPatternList : patternList;
       default:
         return [];
     }
@@ -77,25 +133,41 @@ extension on FilterCheckSelectionState {
   FilterCheckSelectionState copyWithListForId(
     int id,
     List<String> updatedList,
+    bool isGlobal,
   ) {
-// Return a new state with the updated list for the given id
     switch (id) {
       case 0:
-        return copyWith(brandList: updatedList);
+        return isGlobal
+            ? copyWith(globalBrandList: updatedList)
+            : copyWith(brandList: updatedList);
       case 1:
-        return copyWith(genderList: updatedList);
+        return isGlobal
+            ? copyWith(globalGenderList: updatedList)
+            : copyWith(genderList: updatedList);
       case 2:
-        return copyWith(storeList: updatedList);
+        return isGlobal
+            ? copyWith(globalStoreList: updatedList)
+            : copyWith(storeList: updatedList);
       case 4:
-        return copyWith(colorList: updatedList);
+        return isGlobal
+            ? copyWith(globalColorList: updatedList)
+            : copyWith(colorList: updatedList);
       case 5:
-        return copyWith(categoryList: updatedList);
+        return isGlobal
+            ? copyWith(globalCategoryList: updatedList)
+            : copyWith(categoryList: updatedList);
       case 6:
-        return copyWith(sizeList: updatedList);
+        return isGlobal
+            ? copyWith(globalSizeList: updatedList)
+            : copyWith(sizeList: updatedList);
       case 7:
-        return copyWith(materialList: updatedList);
+        return isGlobal
+            ? copyWith(globalMaterialList: updatedList)
+            : copyWith(materialList: updatedList);
       case 8:
-        return copyWith(patternList: updatedList);
+        return isGlobal
+            ? copyWith(globalPatternList: updatedList)
+            : copyWith(patternList: updatedList);
       default:
         return this;
     }

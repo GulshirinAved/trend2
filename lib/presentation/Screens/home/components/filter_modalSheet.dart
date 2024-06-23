@@ -95,6 +95,7 @@ class FilterTopModal extends StatelessWidget {
                                     stateFilter,
                                     filterId,
                                     currentFilterItem,
+                                    stateFilter.isGlobal,
                                   ),
                                   onTap: (value) {
                                     if (value!) {
@@ -138,7 +139,9 @@ class FilterTopModal extends StatelessWidget {
                   context
                       .read<CardSelectionBloc>()
                       .add(const CardSelectionEvent(-1));
-                  context.read<FilterCheckSelectionBloc>().add(CancelEvent());
+                  context
+                      .read<FilterCheckSelectionBloc>()
+                      .add(const CancelEvent());
                 },
                 width: 150,
                 title: 'Close',
@@ -156,7 +159,8 @@ class FilterTopModal extends StatelessWidget {
                           .add(const CardSelectionEvent(-1));
                       context
                           .read<FilterCheckSelectionBloc>()
-                          .add(ApplyEvent());
+                          .add(const ApplyEvent(isGlobal: true));
+                      Navigator.pop(context);
                     },
                     width: 150,
                     title: 'Apply',
@@ -189,15 +193,22 @@ bool _isFilterChecked(
   FilterCheckSelectionState stateFilter,
   int selectedIndex,
   String filterItem,
+  bool? isGlobal,
 ) {
   switch (selectedIndex) {
     case 5:
-      return stateFilter.categoryList.contains(filterItem);
+      return isGlobal == false
+          ? stateFilter.categoryList.contains(filterItem)
+          : stateFilter.globalCategoryList.contains(filterItem);
 
     case 0:
-      return stateFilter.brandList.contains(filterItem);
+      return isGlobal == false
+          ? stateFilter.brandList.contains(filterItem)
+          : stateFilter.globalBrandList.contains(filterItem);
     case 2:
-      return stateFilter.storeList.contains(filterItem);
+      return isGlobal == false
+          ? stateFilter.storeList.contains(filterItem)
+          : stateFilter.globalStoreList.contains(filterItem);
     default:
       return false;
   }

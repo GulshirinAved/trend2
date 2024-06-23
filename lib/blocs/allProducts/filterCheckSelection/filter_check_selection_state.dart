@@ -10,17 +10,35 @@ class FilterCheckSelectionState extends Equatable {
   final List<String> sizeList;
   final List<String> materialList;
   final List<String> patternList;
-  final bool? isGlobal;
-  const FilterCheckSelectionState(
-      {required this.brandList,
-      required this.genderList,
-      required this.storeList,
-      required this.colorList,
-      required this.categoryList,
-      required this.sizeList,
-      required this.materialList,
-      required this.patternList,
-      required this.isGlobal});
+  final List<String> globalBrandList;
+  final List<String> globalGenderList;
+  final List<String> globalStoreList;
+  final List<String> globalColorList;
+  final List<String> globalCategoryList;
+  final List<String> globalSizeList;
+  final List<String> globalMaterialList;
+  final List<String> globalPatternList;
+  final bool isGlobal;
+
+  const FilterCheckSelectionState({
+    required this.brandList,
+    required this.genderList,
+    required this.storeList,
+    required this.colorList,
+    required this.categoryList,
+    required this.sizeList,
+    required this.materialList,
+    required this.patternList,
+    required this.globalBrandList,
+    required this.globalGenderList,
+    required this.globalStoreList,
+    required this.globalColorList,
+    required this.globalCategoryList,
+    required this.globalSizeList,
+    required this.globalMaterialList,
+    required this.globalPatternList,
+    required this.isGlobal,
+  });
 
   @override
   List<Object> get props => [
@@ -32,19 +50,36 @@ class FilterCheckSelectionState extends Equatable {
         sizeList,
         materialList,
         patternList,
-        isGlobal ?? false
+        globalBrandList,
+        globalGenderList,
+        globalStoreList,
+        globalColorList,
+        globalCategoryList,
+        globalSizeList,
+        globalMaterialList,
+        globalPatternList,
+        isGlobal,
       ];
 
-  FilterCheckSelectionState copyWith(
-      {List<String>? brandList,
-      List<String>? genderList,
-      List<String>? storeList,
-      List<String>? colorList,
-      List<String>? categoryList,
-      List<String>? sizeList,
-      List<String>? materialList,
-      List<String>? patternList,
-      bool? isGlobal}) {
+  FilterCheckSelectionState copyWith({
+    List<String>? brandList,
+    List<String>? genderList,
+    List<String>? storeList,
+    List<String>? colorList,
+    List<String>? categoryList,
+    List<String>? sizeList,
+    List<String>? materialList,
+    List<String>? patternList,
+    List<String>? globalBrandList,
+    List<String>? globalGenderList,
+    List<String>? globalStoreList,
+    List<String>? globalColorList,
+    List<String>? globalCategoryList,
+    List<String>? globalSizeList,
+    List<String>? globalMaterialList,
+    List<String>? globalPatternList,
+    bool? isGlobal,
+  }) {
     return FilterCheckSelectionState(
       brandList: brandList ?? this.brandList,
       genderList: genderList ?? this.genderList,
@@ -54,6 +89,14 @@ class FilterCheckSelectionState extends Equatable {
       sizeList: sizeList ?? this.sizeList,
       materialList: materialList ?? this.materialList,
       patternList: patternList ?? this.patternList,
+      globalBrandList: globalBrandList ?? this.globalBrandList,
+      globalGenderList: globalGenderList ?? this.globalGenderList,
+      globalStoreList: globalStoreList ?? this.globalStoreList,
+      globalColorList: globalColorList ?? this.globalColorList,
+      globalCategoryList: globalCategoryList ?? this.globalCategoryList,
+      globalSizeList: globalSizeList ?? this.globalSizeList,
+      globalMaterialList: globalMaterialList ?? this.globalMaterialList,
+      globalPatternList: globalPatternList ?? this.globalPatternList,
       isGlobal: isGlobal ?? this.isGlobal,
     );
   }
